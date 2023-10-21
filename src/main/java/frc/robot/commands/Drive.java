@@ -21,7 +21,7 @@ public class Drive extends CommandBase {
     drivetrain = dt;
     left = l;
     right = r;
-    super.addRequirements(RobotContainer.m_drivetrain);
+    super.addRequirements(drivetrain);
   }
 
   // Called when the command is initially scheduled.
