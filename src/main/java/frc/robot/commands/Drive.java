@@ -29,10 +29,27 @@ public class Drive extends CommandBase {
     drivetrain.stop();
   }
 
+  public double clamp(double n, double minn, double maxn){
+    return Math.max(Math.min(maxn, n), minn);
+  }
+
+  public static double exponentialScale(double input) {
+    double b = Math.log(0.4) / Math.log(0.75);
+    double output = Math.pow(input, b);
+    return output;
+  }
+
   // Called every time the scheduler runs while the command is scheduled.
   @Override
   public void execute() {
-    drivetrain.drive(left.getY(), right.getY());
+    double xAxis = -left.getX();
+    double yAxis = left.getY();
+    double scale = left.getY() < 0 ? -exponentialScale(-left.getY()) : exponentialScale(left.getY());
+    double leftWheel = scale * (yAxis+xAxis);
+    double rightWheel = scale * (yAxis-xAxis);
+    leftWheel = clamp(leftWheel, -1, 1);
+    rightWheel = clamp(rightWheel, -1, 1);
+    drivetrain.drive(leftWheel, rightWheel);
   }
 
   // Called once the command ends or is interrupted.
