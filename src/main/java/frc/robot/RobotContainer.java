@@ -28,7 +28,7 @@ public class RobotContainer {
   Joystick leftJoystick = new Joystick(0);
   Joystick rightJoystick = new Joystick(1);
   Drivetrain drivetrain = new Drivetrain();
-  Drive drive = new Drive(drivetrain, leftJoystick, rightJoystick);
+  Drive drive = new Drive(drivetrain, leftJoystick);
 
   /** The container for the robot. Contains subsystems, OI devices, and commands. */
   public RobotContainer() {
