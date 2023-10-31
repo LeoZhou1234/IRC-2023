@@ -33,7 +33,11 @@ public class Drive extends CommandBase {
 
   static double b = Math.log(0.4) / Math.log(0.75);
 
+  // Works for negatives!
   public static double exponentialScale(double input) {
+  if (input < 0){
+    return -Math.pow(-input, b);
+  }
     return Math.pow(input, b);
   }
 
