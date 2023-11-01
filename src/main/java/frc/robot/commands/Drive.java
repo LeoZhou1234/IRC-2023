@@ -31,17 +31,37 @@ public class Drive extends CommandBase {
     return Math.max(Math.min(max, n), min);
   }
 
-  static double b = Math.log(0.4) / Math.log(0.75);
+  protected static double b_yAxis = Math.log(0.35) / Math.log(0.5);
+  protected static double a_yAxis = 0.35 / Math.pow(0.5, b_yAxis);
 
-  public static double exponentialScale(double input) {
-    return Math.pow(input, b);
+  public static double exponentialScaleY(double input) {
+    return a_yAxis * Math.pow(input, b_yAxis);
+  }
+
+  public static double exponentialScaleX(double input) {
+    double b_xAxis = Math.log(0.2) / Math.log(0.5);
+    double a_xAxis = 0.3 / Math.pow(0.75, b_xAxis);
+    return a_xAxis * Math.pow(input, b_xAxis);
+  }
+
+  public static double bitchFixFunctionX(double input) {
+    return input > 0 ? exponentialScaleX(input) : -exponentialScaleX(-input);
+  }
+
+  public static double bitchFixFunctionY(double input) {
+    return input > 0 ? exponentialScaleY(input) : -exponentialScaleY(-input);
   }
 
   // Called every time the scheduler runs while the command is scheduled.
   @Override
   public void execute() {
-    double xAxis = -exponentialScale(driveJoystick.getX());
-    double yAxis = exponentialScale(driveJoystick.getY());
+    double xAxis = -bitchFixFunctionX(Math.abs(driveJoystick.getX()) < 0.05 ? 0 : driveJoystick.getX());
+    double yAxis = 0;
+    if (Math.abs(driveJoystick.getY()) < 0.15 && Math.abs(driveJoystick.getX()) > 0.9) {
+      xAxis = 1D;
+    } else {
+      yAxis = bitchFixFunctionY(Math.abs(driveJoystick.getY()) < 0.05 ? 0 : driveJoystick.getY());
+    }
     double leftWheel = yAxis + xAxis;
     double rightWheel = yAxis - xAxis;
     leftWheel = clamp(leftWheel, -1, 1);
