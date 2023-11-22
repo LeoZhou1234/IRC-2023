@@ -12,14 +12,12 @@ import frc.robot.subsystems.Drivetrain;
 public class Drive extends CommandBase {
   /** Creates a new Drive. */
   Drivetrain drivetrain;
-  Joystick right;
-  Joystick left;
+  Joystick driveJoystick;
 
-  public Drive(Drivetrain dt, Joystick l, Joystick r) {
+  public Drive(Drivetrain dt, Joystick l) {
     // Use addRequirements() here to declare subsystem dependencies.
     drivetrain = dt;
-    left = l;
-    right = r;
+    driveJoystick = l;
     super.addRequirements(drivetrain);
   }
 
@@ -29,11 +27,32 @@ public class Drive extends CommandBase {
     drivetrain.stop();
   }
 
+  public double clamp(double n, double min, double max){
+    return Math.max(Math.min(max, n), min);
+  }
+
+  static double b = Math.log(0.4) / Math.log(0.75);
+
+  // Works for negatives!
+  public static double exponentialScale(double input) {
+    if (input < 0){
+      return -Math.pow(-input, b);
+    }
+    return Math.pow(input, b);
+  }
+
   // Called every time the scheduler runs while the command is scheduled.
   @Override
   public void execute() {
-    drivetrain.drive(left.getY(), right.getY());
+    double xAxis = -exponentialScale(driveJoystick.getX());
+    double yAxis = exponentialScale(driveJoystick.getY());
+    double leftWheel = yAxis + xAxis;
+    double rightWheel = yAxis - xAxis;
+    leftWheel = clamp(leftWheel, -1, 1);
+    rightWheel = clamp(rightWheel, -1, 1);
+    drivetrain.drive(leftWheel, rightWheel);
   }
+
 
   // Called once the command ends or is interrupted.
   @Override
