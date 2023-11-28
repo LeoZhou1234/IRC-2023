@@ -9,13 +9,11 @@ import edu.wpi.first.wpilibj.XboxController;
 import edu.wpi.first.wpilibj.motorcontrol.VictorSP;
 import edu.wpi.first.wpilibj2.command.Subsystem;
 import edu.wpi.first.wpilibj2.command.button.JoystickButton;
-import frc.robot.commands.AutoDrive;
+import frc.robot.commands.AutoPlaybackCommand;
 import frc.robot.commands.Drive;
-import frc.robot.commands.ExampleCommand;
 import frc.robot.commands.SetConveyorSpeed;
 import frc.robot.subsystems.Conveyor;
 import frc.robot.subsystems.Drivetrain;
-import frc.robot.subsystems.ExampleSubsystem;
 import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.wpilibj.Joystick;
 
@@ -41,15 +39,29 @@ public class RobotContainer {
 
   JoystickButton joystickButton = new JoystickButton(leftJoystick, 3);
   JoystickButton joystickButton2 = new JoystickButton(leftJoystick, 2);
+  static RobotContainer instance = null;
+
+  public static RobotContainer getInstance() {
+      return instance;
+  }
 
   /** The container for the robot. Contains subsystems, OI devices, and commands. */
   public RobotContainer() {
     // Configure the button bindings
     drivetrain.setDefaultCommand(drive);
     configureButtonBindings();
+    instance = this;
   }
 
-  /**
+  public Drivetrain getDrivetrain() {
+      return drivetrain;
+  }
+
+    public Conveyor getConveyor() {
+        return conveyor;
+    }
+
+    /**
    * Use this method to define your button->command mappings. Buttons can be created by
    * instantiating a {@link GenericHID} or one of its subclasses ({@link
    * edu.wpi.first.wpilibj.Joystick} or {@link XboxController}), and then passing it to a {@link
@@ -89,6 +101,6 @@ public class RobotContainer {
    */
   public Command getAutonomousCommand() {
     // An ExampleCommand will run in autonomous
-    return new AutoDrive(drivetrain, 0.5, 0.5, 2);
+    return new AutoPlaybackCommand(drivetrain, conveyor);
   }
 }

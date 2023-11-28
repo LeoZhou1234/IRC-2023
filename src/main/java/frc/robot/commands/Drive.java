@@ -7,6 +7,7 @@ package frc.robot.commands;
 import edu.wpi.first.wpilibj.Joystick;
 import edu.wpi.first.wpilibj2.command.CommandBase;
 import frc.robot.subsystems.Drivetrain;
+import frc.robot.transformers.DriveTransformer;
 
 
 public class Drive extends CommandBase {
@@ -27,30 +28,10 @@ public class Drive extends CommandBase {
     drivetrain.stop();
   }
 
-  public double clamp(double n, double min, double max){
-    return Math.max(Math.min(max, n), min);
-  }
-
-  static double b = Math.log(0.4) / Math.log(0.75);
-
-  // Works for negatives!
-  public static double exponentialScale(double input) {
-    if (input < 0){
-      return -Math.pow(-input, b);
-    }
-    return Math.pow(input, b);
-  }
-
   // Called every time the scheduler runs while the command is scheduled.
   @Override
   public void execute() {
-    double xAxis = -exponentialScale(driveJoystick.getX());
-    double yAxis = exponentialScale(driveJoystick.getY());
-    double leftWheel = yAxis + xAxis;
-    double rightWheel = yAxis - xAxis;
-    leftWheel = clamp(leftWheel, -1, 1);
-    rightWheel = clamp(rightWheel, -1, 1);
-    drivetrain.drive(leftWheel, rightWheel);
+    drivetrain.drive(DriveTransformer.transformInputs(driveJoystick.getX(), driveJoystick.getY()));
   }
 
 
