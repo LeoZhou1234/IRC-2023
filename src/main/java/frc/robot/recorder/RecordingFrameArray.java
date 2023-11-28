@@ -19,7 +19,7 @@ public class RecordingFrameArray {
 
     public RecordingFrameArray(ByteBuffer buff) {
         frames = new ArrayList<>();
-        int length = Varint.readVarint(buff);
+        int length = VarInt.readVarint(buff);
         for (int i = 0; i < length; i++) {
             frames.add(new RecordingFrame(buff));
         }
@@ -28,7 +28,7 @@ public class RecordingFrameArray {
     public RecordingFrameArray(String encodedData) {
         ByteBuffer buff = ByteBuffer.wrap(Base64.getDecoder().decode(encodedData));
         frames = new ArrayList<>();
-        int length = Varint.readVarint(buff);
+        int length = VarInt.readVarint(buff);
         for (int i = 0; i < length; i++) {
             frames.add(new RecordingFrame(buff));
         }
@@ -40,8 +40,8 @@ public class RecordingFrameArray {
 
     public ByteBuffer serialize() {
         ByteBuffer[] buffers = (ByteBuffer[]) frames.stream().map(RecordingFrame::serialize).toArray();
-        ByteBuffer buffer = ByteBuffer.allocate(Varint.estimateVarIntSize(buffers.length) + Arrays.stream(buffers).mapToInt(ByteBuffer::capacity).reduce(0, Integer::sum));
-        Varint.writeVarInt(buffers.length, buffer);
+        ByteBuffer buffer = ByteBuffer.allocate(VarInt.estimateVarIntSize(buffers.length) + Arrays.stream(buffers).mapToInt(ByteBuffer::capacity).reduce(0, Integer::sum));
+        VarInt.writeVarInt(buffers.length, buffer);
         for (ByteBuffer buff : buffers) {
             buffer.put(buff);
         }

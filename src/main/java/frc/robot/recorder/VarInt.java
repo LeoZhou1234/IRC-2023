@@ -2,7 +2,7 @@ package frc.robot.recorder;
 
 import java.nio.ByteBuffer;
 
-public class Varint {
+public class VarInt {
     public static int estimateVarIntSize(int value) {
         int size = 1;
 

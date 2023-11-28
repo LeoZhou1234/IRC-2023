@@ -23,21 +23,21 @@ public class RecordingFrame {
     public RecordingFrame(ByteBuffer data) {
         this.x = data.getDouble();
         this.y = data.getDouble();
-        this.duration = Varint.readVarint(data);
+        this.duration = VarInt.readVarint(data);
         this.pressedButtons = new ArrayList<>();
 
-        int buttonLength = Varint.readVarint(data);
+        int buttonLength = VarInt.readVarint(data);
         for (int i = 0; i < buttonLength; i++) {
             this.pressedButtons.add(data.getInt());
         }
     }
 
     public ByteBuffer serialize() {
-        ByteBuffer buff = ByteBuffer.allocate(Double.BYTES * 2 + Varint.estimateVarIntSize(duration) + Varint.estimateVarIntSize(pressedButtons.size()) + pressedButtons.size());
+        ByteBuffer buff = ByteBuffer.allocate(Double.BYTES * 2 + VarInt.estimateVarIntSize(duration) + VarInt.estimateVarIntSize(pressedButtons.size()) + pressedButtons.size());
         buff.putDouble(x);
         buff.putDouble(y);
-        Varint.writeVarInt(duration, buff);
-        Varint.writeVarInt(pressedButtons.size(), buff);
+        VarInt.writeVarInt(duration, buff);
+        VarInt.writeVarInt(pressedButtons.size(), buff);
         for (int pressedButton : pressedButtons) {
             buff.putInt(pressedButton);
         }
