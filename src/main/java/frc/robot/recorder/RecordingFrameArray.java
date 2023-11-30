@@ -5,6 +5,9 @@ import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Base64;
 import java.util.List;
+import java.util.zip.DataFormatException;
+import java.util.zip.Deflater;
+import java.util.zip.Inflater;
 
 public class RecordingFrameArray {
     ArrayList<RecordingFrame> frames;
@@ -27,6 +30,7 @@ public class RecordingFrameArray {
 
     public RecordingFrameArray(String encodedData) {
         ByteBuffer buff = ByteBuffer.wrap(Base64.getDecoder().decode(encodedData));
+
         frames = new ArrayList<>();
         int length = VarInt.readVarint(buff);
         for (int i = 0; i < length; i++) {
@@ -39,12 +43,19 @@ public class RecordingFrameArray {
     }
 
     public ByteBuffer serialize() {
-        ByteBuffer[] buffers = (ByteBuffer[]) frames.stream().map(RecordingFrame::serialize).toArray();
+        ByteBuffer[] buffers = new ByteBuffer[frames.size()];
+        for (int i = 0; i < frames.size(); i++) {
+            buffers[i] = frames.get(i).serialize();
+        }
         ByteBuffer buffer = ByteBuffer.allocate(VarInt.estimateVarIntSize(buffers.length) + Arrays.stream(buffers).mapToInt(ByteBuffer::capacity).reduce(0, Integer::sum));
         VarInt.writeVarInt(buffers.length, buffer);
         for (ByteBuffer buff : buffers) {
-            buffer.put(buff);
+            byte[] bytes = buff.array();
+            for (byte aByte : bytes) {
+                buffer.put(aByte);
+            }
         }
+
         return buffer;
     }
 

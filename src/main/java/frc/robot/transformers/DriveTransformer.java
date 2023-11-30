@@ -30,8 +30,8 @@ public class DriveTransformer {
     public static DriveInstructions transformInputs(double x, double y) {
         double xAxis = -absExponentialScaleX(Math.abs(x) < 0.05 ? 0 : x);
         double yAxis = 0;
-        if (Math.abs(y) < 0.15 && Math.abs(y) > 0.9) {
-            xAxis = y < 0 ? -1D : 1D;
+        if (Math.abs(x) > 0.9 && Math.abs(y) < 0.15) {
+            xAxis = x < 0 ? 1D : -1D;
         } else {
             yAxis = absExponentialScaleY(Math.abs(y) < 0.05 ? 0 : y);
         }

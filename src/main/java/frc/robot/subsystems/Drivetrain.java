@@ -39,6 +39,7 @@ public class Drivetrain extends SubsystemBase {
 
   @Override
   public void periodic() {
-    // This method will be called once per scheduler run
+//    System.out.println("Left motor PWM value: " + leftVictor.get());
+//    System.out.println("Right motor PWM value: " + rightVictor.get());
   }
 }
