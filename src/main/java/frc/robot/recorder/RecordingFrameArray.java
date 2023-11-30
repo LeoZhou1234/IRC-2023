@@ -5,9 +5,6 @@ import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Base64;
 import java.util.List;
-import java.util.zip.DataFormatException;
-import java.util.zip.Deflater;
-import java.util.zip.Inflater;
 
 public class RecordingFrameArray {
     ArrayList<RecordingFrame> frames;
@@ -20,7 +17,8 @@ public class RecordingFrameArray {
         this.frames = frames;
     }
 
-    public RecordingFrameArray(ByteBuffer buff) {
+    public RecordingFrameArray(ByteBuffer buff, boolean compressed) {
+        buff = compressed ? ZlibUtils.decompress(buff) : buff;
         frames = new ArrayList<>();
         int length = VarInt.readVarint(buff);
         for (int i = 0; i < length; i++) {
@@ -56,7 +54,7 @@ public class RecordingFrameArray {
             }
         }
 
-        return buffer;
+        return ZlibUtils.compress(buffer);
     }
 
     public String serializeToString() {
