@@ -176,7 +176,7 @@ public class RobotContainer {
      */
     public Command getAutonomousCommand() {
         // An ExampleCommand will run in autonomous
-        if (Constants.USE_FALLBACK_AUTO) {
+        if (!Constants.USE_FALLBACK_AUTO) {
             if (Constants.IS_PRODUCTION) {
                 return new AutoPlaybackCommand(drivetrain, conveyor);
             } else {
