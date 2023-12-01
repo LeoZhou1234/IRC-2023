@@ -11,11 +11,12 @@ import edu.wpi.first.wpilibj2.command.CommandBase;
 import edu.wpi.first.wpilibj2.command.Subsystem;
 import edu.wpi.first.wpilibj2.command.button.JoystickButton;
 import frc.robot.commands.AutoDrive;
-import frc.robot.commands.AutoPlaybackCommand;
+//import frc.robot.commands.AutoPlaybackCommand;
 import frc.robot.commands.Drive;
 import frc.robot.commands.SetConveyorSpeed;
-import frc.robot.recorder.RecorderRegistry;
-import frc.robot.recorder.RecorderService;
+import frc.robot.commands.BasicAuto;
+//import frc.robot.recorder.RecorderRegistry;
+//import frc.robot.recorder.RecorderService;
 import frc.robot.subsystems.Conveyor;
 import frc.robot.subsystems.Drivetrain;
 import edu.wpi.first.wpilibj2.command.Command;
@@ -61,8 +62,8 @@ public class RobotContainer {
      */
     public RobotContainer() {
         // Configure the button binding
-        registerAutoMappings();
-        RecorderService.init(leftJoystick);
+        //registerAutoMappings();
+        //RecorderService.init(leftJoystick);
         drivetrain.setDefaultCommand(drive);
         configureButtonBindings();
         instance = this;
@@ -72,7 +73,7 @@ public class RobotContainer {
         return recording;
     }
 
-    public void registerAutoMappings() {
+    /*public void registerAutoMappings() {
         RecorderRegistry.register(frame -> {
             if (frame.getX() != 0 || frame.getY() != 0) {
                 DriveTransformer.DriveInstructions instructions = DriveTransformer.transformInputs(frame.getX(), frame.getY());
@@ -92,7 +93,7 @@ public class RobotContainer {
             }
             return new SetConveyorSpeed(RobotContainer.getInstance().getConveyor(), 0D);
         });
-    }
+    }*/
 
     public Drivetrain getDrivetrain() {
         return drivetrain;
@@ -132,7 +133,7 @@ public class RobotContainer {
                     HashSet<Subsystem> ret = new HashSet<>();
                     ret.add(conveyor);
                     return ret;
-                });
+                });/*
         joystickButton3
                 .whileTrue(() -> {
                     if (!RecorderService.getInstance().isRecording() && !Constants.IS_PRODUCTION) {
@@ -145,7 +146,7 @@ public class RobotContainer {
                     HashSet<Subsystem> ret = new HashSet<>();
                     ret.add(conveyor);
                     return ret;
-                });
+                });/
         joystickButton4
                 .whileTrue(() -> {
                     if (RecorderService.getInstance().isRecording()) {
@@ -169,7 +170,7 @@ public class RobotContainer {
                     } else {
                         System.out.println("You must record before you can print out the encoded recording!");
                     }
-                });
+                });*/
     }
 
     /**
@@ -179,14 +180,16 @@ public class RobotContainer {
      */
     public Command getAutonomousCommand() {
         // An ExampleCommand will run in autonomous
-        if (Constants.IS_PRODUCTION) {
-            return new AutoPlaybackCommand(drivetrain, conveyor);
-        } else {
-            if (recording != null) {
-                return new AutoPlaybackCommand(drivetrain, conveyor, recording);
-            } else {
-                return new AutoPlaybackCommand(drivetrain, conveyor);
-            }
-        }
+    //     if (Constants.IS_PRODUCTION) {
+    //         return new AutoPlaybackCommand(drivetrain, conveyor);
+    //     } else {
+    //         if (recording != null) {
+    //             return new AutoPlaybackCommand(drivetrain, conveyor, recording);
+    //         } else {
+    //             return new AutoPlaybackCommand(drivetrain, conveyor);
+    //         }
+    //     }\
+    BasicAuto basicAuto = new BasicAuto(drivetrain, conveyor);
+    return basicAuto;
     }
 }
