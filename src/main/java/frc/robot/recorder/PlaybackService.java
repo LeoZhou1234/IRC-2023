@@ -11,7 +11,6 @@ import java.util.concurrent.TimeUnit;
 import java.util.concurrent.atomic.AtomicInteger;
 
 public class PlaybackService {
-    private static ScheduledExecutorService executor = Executors.newSingleThreadScheduledExecutor();
     private static boolean running = false;
 
     public static void run(RecordingFrameArray track) {
@@ -35,8 +34,7 @@ public class PlaybackService {
     }
 
     public static void halt() {
-        executor.shutdownNow();
-        executor = Executors.newSingleThreadScheduledExecutor();
+        Robot.discardRunnables();
         running = false;
     }
 
