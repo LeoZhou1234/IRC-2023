@@ -58,7 +58,6 @@ public class AutoPlaybackCommand extends CommandBase {
 
     @Override
     public void end(boolean interrupted) {
-        if (!PlaybackService.isRunning()) System.out.println("*** playservice is stopped");
         PlaybackService.halt();
         dt.stop();
         cv.stop();

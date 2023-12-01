@@ -20,7 +20,6 @@ public class PlaybackService {
         running = true;
         AtomicInteger baseTime = new AtomicInteger(0);
         track.getFrames().forEach(frame -> {
-            System.out.println(Arrays.toString(frame.getPressedButtons().toArray()));
             RecorderRegistry.getConstructors().forEach(constr -> {
                 Command cmd = constr.apply(frame);
                 if (cmd != null) {
