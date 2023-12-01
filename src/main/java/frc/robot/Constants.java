@@ -15,4 +15,5 @@ package frc.robot;
 public final class Constants {
     public static double CONVEYOR_SPEED = 0.5D;
     public static boolean IS_PRODUCTION = false;
+    public static boolean USE_FALLBACK_AUTO = true;
 }

@@ -10,10 +10,7 @@ import edu.wpi.first.wpilibj.motorcontrol.VictorSP;
 import edu.wpi.first.wpilibj2.command.CommandBase;
 import edu.wpi.first.wpilibj2.command.Subsystem;
 import edu.wpi.first.wpilibj2.command.button.JoystickButton;
-import frc.robot.commands.AutoDrive;
-import frc.robot.commands.AutoPlaybackCommand;
-import frc.robot.commands.Drive;
-import frc.robot.commands.SetConveyorSpeed;
+import frc.robot.commands.*;
 import frc.robot.recorder.RecorderRegistry;
 import frc.robot.recorder.RecorderService;
 import frc.robot.subsystems.Conveyor;
@@ -179,14 +176,18 @@ public class RobotContainer {
      */
     public Command getAutonomousCommand() {
         // An ExampleCommand will run in autonomous
-        if (Constants.IS_PRODUCTION) {
-            return new AutoPlaybackCommand(drivetrain, conveyor);
-        } else {
-            if (recording != null) {
-                return new AutoPlaybackCommand(drivetrain, conveyor, recording);
-            } else {
+        if (Constants.USE_FALLBACK_AUTO) {
+            if (Constants.IS_PRODUCTION) {
                 return new AutoPlaybackCommand(drivetrain, conveyor);
+            } else {
+                if (recording != null) {
+                    return new AutoPlaybackCommand(drivetrain, conveyor, recording);
+                } else {
+                    return new AutoPlaybackCommand(drivetrain, conveyor);
+                }
             }
+        } else {
+            return new PreprogrammedAuto(drivetrain, conveyor);
         }
     }
 }

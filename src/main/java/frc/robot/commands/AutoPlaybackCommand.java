@@ -44,7 +44,7 @@ public class AutoPlaybackCommand extends CommandBase {
     @Override
     public void execute() {
         if ((encoded != null || ENCODED_COMMANDS != null) && !ran) {
-            RecordingFrameArray array = new RecordingFrameArray(encoded != null ? encoded : ENCODED_COMMANDS);
+            RecordingFrameArray array = new RecordingFrameArray(encoded != null ? encoded : ENCODED_COMMANDS, true);
             PlaybackService.run(array);
             ran = true;
         }
@@ -58,9 +58,10 @@ public class AutoPlaybackCommand extends CommandBase {
 
     @Override
     public void end(boolean interrupted) {
+        if (!PlaybackService.isRunning()) System.out.println("*** playservice is stopped");
+        PlaybackService.halt();
         dt.stop();
         cv.stop();
-//        PlaybackService.halt();
     }
 
     @Override

@@ -17,7 +17,8 @@ public class RecordingFrameArray {
         this.frames = frames;
     }
 
-    public RecordingFrameArray(ByteBuffer buff, boolean compressed) {
+    public RecordingFrameArray(String encodedData, boolean compressed) {
+        ByteBuffer buff = ByteBuffer.wrap(Base64.getDecoder().decode(encodedData));
         buff = compressed ? ZlibUtils.decompress(buff) : buff;
         frames = new ArrayList<>();
         int length = VarInt.readVarint(buff);
