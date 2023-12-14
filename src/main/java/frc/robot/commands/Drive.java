@@ -7,8 +7,6 @@ package frc.robot.commands;
 import edu.wpi.first.wpilibj.Joystick;
 import edu.wpi.first.wpilibj2.command.CommandBase;
 import frc.robot.subsystems.Drivetrain;
-import frc.robot.transformers.DriveTransformer;
-
 
 public class Drive extends CommandBase {
   /** Creates a new Drive. */
@@ -44,7 +42,13 @@ public class Drive extends CommandBase {
   // Called every time the scheduler runs while the command is scheduled.
   @Override
   public void execute() {
-    DriveTransformer.transformInputs(driveJoystick.getX(), driveJoystick.getY(), drivetrain);
+    double xAxis = -exponentialScale(driveJoystick.getX());
+    double yAxis = exponentialScale(driveJoystick.getY());
+    double leftWheel = yAxis + xAxis;
+    double rightWheel = yAxis - xAxis;
+    leftWheel = clamp(leftWheel, -1, 1);
+    rightWheel = clamp(rightWheel, -1, 1);
+    drivetrain.drive(leftWheel, rightWheel);
   }
 
 

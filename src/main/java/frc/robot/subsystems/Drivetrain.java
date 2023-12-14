@@ -6,7 +6,6 @@ package frc.robot.subsystems;
 
 import edu.wpi.first.wpilibj.motorcontrol.VictorSP;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
-import frc.robot.transformers.DriveTransformer;
 
 public class Drivetrain extends SubsystemBase {
   /** Creates a new Drivetrain. */
@@ -25,11 +24,6 @@ public class Drivetrain extends SubsystemBase {
   public void drive(double leftSpeed, double rightSpeed) {
     leftVictor.set(leftSpeed);
     rightVictor.set(rightSpeed);
-  }
-
-  public void drive(DriveTransformer.DriveInstructions instructions) {
-    leftVictor.set(instructions.getLeft());
-    rightVictor.set(instructions.getRight());
   }
 
   public void stop() {

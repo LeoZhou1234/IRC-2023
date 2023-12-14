@@ -6,7 +6,6 @@ import edu.wpi.first.wpilibj2.command.CommandBase;
 //import frc.robot.recorder.Unrecordable;
 //import frc.robot.recorder.RecorderRegistry;
 import frc.robot.subsystems.Drivetrain;
-import frc.robot.transformers.DriveTransformer;
 
 public class AutoDrive extends CommandBase {
     Drivetrain drivetrain;
@@ -20,13 +19,6 @@ public class AutoDrive extends CommandBase {
 
         addRequirements(drivetrain);
     }
-
-    // public AutoDrive(Drivetrain dt, DriveTransformer.DriveInstructions instructions) {
-    //     this.drivetrain = dt;
-    //     this.left = instructions.getLeft();
-    //     this.right = instructions.getRight();
-    // }
-
     @Override
     public void initialize() {
         System.out.println("Executing auto commands - left, right:");

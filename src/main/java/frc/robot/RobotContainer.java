@@ -11,7 +11,6 @@ import edu.wpi.first.wpilibj2.command.CommandBase;
 import edu.wpi.first.wpilibj2.command.Subsystem;
 import edu.wpi.first.wpilibj2.command.button.JoystickButton;
 import frc.robot.commands.AutoDrive;
-//import frc.robot.commands.AutoPlaybackCommand;
 import frc.robot.commands.Drive;
 import frc.robot.commands.SetConveyorSpeed;
 import frc.robot.commands.BasicAuto;
@@ -19,7 +18,6 @@ import frc.robot.subsystems.Conveyor;
 import frc.robot.subsystems.Drivetrain;
 import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.wpilibj.Joystick;
-import frc.robot.transformers.DriveTransformer;
 import java.util.HashSet;
 import java.util.Set;
 
@@ -103,16 +101,6 @@ public class RobotContainer {
      * @return the command to run in autonomous
      */
     public Command getAutonomousCommand() {
-        // An ExampleCommand will run in autonomous
-    //     if (Constants.IS_PRODUCTION) {
-    //         return new AutoPlaybackCommand(drivetrain, conveyor);
-    //     } else {
-    //         if (recording != null) {
-    //             return new AutoPlaybackCommand(drivetrain, conveyor, recording);
-    //         } else {
-    //             return new AutoPlaybackCommand(drivetrain, conveyor);
-    //         }
-    //     }\
     BasicAuto basicAuto = new BasicAuto(drivetrain, conveyor);
     return basicAuto;
     }
